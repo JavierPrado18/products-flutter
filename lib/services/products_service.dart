@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -13,6 +14,8 @@ class ProductsService extends ChangeNotifier {
   List<Product> products=[];
   bool isLoading=false;
 
+  //para obtener el token del secure de una autenticacion
+  final storage=const FlutterSecureStorage();
   
   //Pat para obtener la ruta de la imagen
   File? newImageFile;
@@ -31,7 +34,9 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future getProducts()async{
-    final url=Uri.https(baseUrl,'products.json');
+    final url=Uri.https(baseUrl,'products.json',{
+      'auth':await storage.read(key:'token')??''
+    });
     final response=await http.get(url);
     final Map<String,dynamic> responseData=json.decode(response.body);
 
@@ -64,7 +69,9 @@ class ProductsService extends ChangeNotifier {
 
   //metodo para actualizar
   Future updateProduct(Product productUpdate)async{
-    final url=Uri.https(baseUrl,'products/${productUpdate.id}.json');
+    final url=Uri.https(baseUrl,'products/${productUpdate.id}.json',{
+      'auth':await storage.read(key: 'token')??''
+    });
     //actualizamos el producto
     await http.put(url,body: productUpdate.toJson());
     
@@ -82,7 +89,9 @@ class ProductsService extends ChangeNotifier {
   //para crear un producto
   Future createProduct(Product newProduct)async{
 
-    final url=Uri.https(baseUrl,'products.json');
+    final url=Uri.https(baseUrl,'products.json',{
+      'auth':await storage.read(key: 'token')??''
+    });
     final response=await http.post(url,body: newProduct.toJson());
     //obtenemos el id del producto (key del producto en Firebase)
     final decodedData=json.decode(response.body);

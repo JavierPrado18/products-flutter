@@ -6,8 +6,8 @@ import 'package:formulario/ui/custom_input_decoration.dart';
 import 'package:formulario/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,9 @@ class LoginScreen extends StatelessWidget {
                 
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, 'register');
+                    Navigator.pushReplacementNamed(context, 'login');
                   }, 
-                  child:const Text('Crear cuenta',style: TextStyle(
+                  child:const Text('¿Ya tienes cuenta?',style: TextStyle(
                     fontSize: 20,
                     color: Color(0xffBA274A)
                     ),
@@ -63,7 +63,7 @@ class _FormContainer extends StatelessWidget {
           ],
           borderRadius: BorderRadius.circular(20)),
       child: Column(children: [
-        const Text('Login',
+        const Text('Crear cuenta',
           textAlign: TextAlign.center, 
           style: TextStyle(
             fontSize: 30,
@@ -122,20 +122,22 @@ class _FormContainer extends StatelessWidget {
               onPressed:loginProvider.isLoading?null: ()async {
                 FocusScope.of(context).unfocus();
                 final authService=Provider.of<AuthService>(context,listen: false);
-
+                
                 if(!loginProvider.isValidForm())return;
                 
                 loginProvider.isLoading=true;
-                final String errorMessage= await authService.login(loginProvider.email, loginProvider.password);
-                if(errorMessage=='' ){                 
-                  Navigator.pushReplacementNamed(context,'home');
-                }else{
-                  NotificationsService.showSnackbar(errorMessage);
+                //llamamos el metodo para crear usuario
+                final messageError=await authService.createUser(loginProvider.email,loginProvider.password); 
+                if(messageError==''){
 
-                loginProvider.isLoading=false;
+                  Navigator.pushReplacementNamed(context, 'home');
+
                 }
+                NotificationsService.showSnackbar(messageError);
+                loginProvider.isLoading=false;
+
               }, 
-              child:Text(loginProvider.isLoading?'Cargando':'Ingresar',style:const TextStyle(
+              child:Text(loginProvider.isLoading?'Cargando':'Crear',style:const TextStyle(
                 fontSize: 20,
                 color: Color(0xffBA274A)),
               )
