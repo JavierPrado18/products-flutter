@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:formulario/providers/login_provider.dart';
-import 'package:formulario/services/auth_service.dart';
-import 'package:formulario/services/services.dart';
-import 'package:formulario/ui/custom_input_decoration.dart';
-import 'package:formulario/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import 'package:formulario/providers/login_provider.dart';
+import 'package:formulario/services/services.dart';
+import 'package:formulario/widgets/widgets.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -79,41 +78,15 @@ class _FormContainer extends StatelessWidget {
       
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(children: [
-            TextFormField(
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: CustomInputDecoration.authInputDecoration(
-                hintText: 'jonh.doe@gmail.com',
-                labelText: 'email',
-                icon: Icons.alternate_email_outlined),
-              onChanged: (value) => loginProvider.email=value,
-              validator: (value) {
-                //expresion regular para validar si se trata de un email
-                String pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regExp  =RegExp(pattern);
-                //el value puede ser null
-                return regExp.hasMatch(value??'')?null:'No es un correo';
-
-              },
-            ),
+            
+            CustomTextFormEmail(loginProvider: loginProvider),
             const SizedBox(
               height: 15,
             ),
-            TextFormField(
-              autocorrect: false,
-              obscureText: true,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: CustomInputDecoration.authInputDecoration(
-                hintText: '*********',
-                labelText: 'contraseña',
-                icon: Icons.password),
-              onChanged: (value) => loginProvider.password=value,
-              validator: (value) {
-                if(value!=null && value.length<=6) return 'Debe tener mas de 6 caracteres';
-                return null;
-              },
-            ),
+
+            CustomTextFormPassword(loginProvider: loginProvider),
             const SizedBox(height: 20,),
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor:const Color(0xff8CDEDC), 
@@ -148,3 +121,5 @@ class _FormContainer extends StatelessWidget {
     );
   }
 }
+
+

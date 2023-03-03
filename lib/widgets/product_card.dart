@@ -5,7 +5,7 @@ class ProductCard extends StatelessWidget {
     final double price;
     final bool available;
     final String? picture;
-    final String id;
+    final String? id;
 
   const ProductCard({
     super.key, 
@@ -13,7 +13,7 @@ class ProductCard extends StatelessWidget {
     required this.price, 
     required this.available, 
     this.picture, 
-    required this.id});
+    this.id});
   @override
   Widget build(BuildContext context) {
     return Container(

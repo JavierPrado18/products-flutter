@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final products=Provider.of<ProductsService>(context);
     final authService=Provider.of<AuthService>(context,listen: false);
+    products.getProducts;
     return Scaffold(
     appBar:AppBar(
     title:const Text('Productos'),
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
             name: product.name,
             picture: product.picture,
             price: product.price,
-            id: product.id!,
+            id: product.id,
           )) ;
       },
     ),

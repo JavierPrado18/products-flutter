@@ -47,6 +47,7 @@ class ProductsService extends ChangeNotifier {
       tempProduct.id=key;
       //lo añadimos a una lista
       products.add(tempProduct);
+      print('get products Ejecutandose');
       notifyListeners();
     });
     
