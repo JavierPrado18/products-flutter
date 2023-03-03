@@ -12,7 +12,10 @@ class ProductsService extends ChangeNotifier {
   final baseUrl='products-62044-default-rtdb.firebaseio.com';
   
   List<Product> products=[];
+  
+  bool isUpdatedData=true;
   bool isLoading=false;
+
 
   //para obtener el token del secure de una autenticacion
   final storage=const FlutterSecureStorage();
@@ -33,7 +36,20 @@ class ProductsService extends ChangeNotifier {
     notifyListeners();
   }
 
+  updateData(){
+    isUpdatedData=true;
+    notifyListeners();
+
+    getProducts();
+    if (products.isEmpty) {
+      isUpdatedData=false;
+      print('Dato no obtenido');
+      notifyListeners();
+    }
+
+  }
   Future getProducts()async{
+    
     final url=Uri.https(baseUrl,'products.json',{
       'auth':await storage.read(key:'token')??''
     });
@@ -42,6 +58,9 @@ class ProductsService extends ChangeNotifier {
 
     responseData.forEach((key, value) { 
       //creamos los valores del mapa
+      if ( value=="Permission denied"){   
+        return;
+      }
       final tempProduct=Product.fromMap(value);
       //asignamos la llave del mapa
       tempProduct.id=key;
@@ -49,6 +68,7 @@ class ProductsService extends ChangeNotifier {
       products.add(tempProduct);
       print('get products Ejecutandose');
       notifyListeners();
+      
     });
     
     

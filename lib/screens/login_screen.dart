@@ -96,18 +96,22 @@ class _FormContainer extends StatelessWidget {
               onPressed:loginProvider.isLoading?null: ()async {
                 FocusScope.of(context).unfocus();
                 final authService=Provider.of<AuthService>(context,listen: false);
+                final productsService=Provider.of<ProductsService>(context,listen: false);
 
                 if(!loginProvider.isValidForm())return;
                 
                 loginProvider.isLoading=true;
                 final String errorMessage= await authService.login(loginProvider.email, loginProvider.password);
-                if(errorMessage=='' ){                 
+                
+                if(errorMessage=='' ){   
+                  productsService.updateData();              
                   Navigator.pushReplacementNamed(context,'home');
                 }else{
                   NotificationsService.showSnackbar(errorMessage);
 
                 loginProvider.isLoading=false;
                 }
+                
               }, 
               child:Text(loginProvider.isLoading?'Cargando':'Ingresar',style:const TextStyle(
                 fontSize: 20,

@@ -95,6 +95,7 @@ class _FormContainer extends StatelessWidget {
               onPressed:loginProvider.isLoading?null: ()async {
                 FocusScope.of(context).unfocus();
                 final authService=Provider.of<AuthService>(context,listen: false);
+                final productService=Provider.of<ProductsService>(context,listen: false);
                 
                 if(!loginProvider.isValidForm())return;
                 
@@ -102,7 +103,7 @@ class _FormContainer extends StatelessWidget {
                 //llamamos el metodo para crear usuario
                 final messageError=await authService.createUser(loginProvider.email,loginProvider.password); 
                 if(messageError==''){
-
+                  productService.updateData();
                   Navigator.pushReplacementNamed(context, 'home');
 
                 }
