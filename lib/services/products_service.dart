@@ -30,17 +30,18 @@ class ProductsService extends ChangeNotifier {
     isLoading=true;
     notifyListeners();
     
-    getProducts();
+    updateData();
     
     isLoading=false;
     notifyListeners();
   }
 
-  updateData(){
+  updateData()async{
     isUpdatedData=true;
     notifyListeners();
 
-    getProducts();
+    await getProducts();
+
     if (products.isEmpty) {
       isUpdatedData=false;
       print('Dato no obtenido');

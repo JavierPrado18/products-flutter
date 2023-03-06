@@ -30,7 +30,6 @@ class AuthService extends ChangeNotifier{
     if(decodeData.containsKey('idToken')){
       return '';
     }else{
-      print(decodeData['error']['message']);
       return decodeData['error']['message'];
     }
   }
@@ -55,7 +54,6 @@ class AuthService extends ChangeNotifier{
       await storage.write(key:'token', value: decodeData['idToken']);
       return '';
     }else{
-      print(decodeData['error']['message']);
       return decodeData['error']['message'];
     }
   }

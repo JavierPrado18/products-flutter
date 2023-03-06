@@ -12,8 +12,8 @@ class AppTheme{
           color: Color(0xffBA274A),
           foregroundColor: Colors.white
         ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: const Color(0xff2191FB),
+        floatingActionButtonTheme:const FloatingActionButtonThemeData(
+          backgroundColor:  Color(0xff2191FB),
           foregroundColor: Colors.white
                   )
       );

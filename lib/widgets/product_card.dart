@@ -21,7 +21,7 @@ class ProductCard extends StatelessWidget {
       height: 300,
       width: 300,
       decoration: BoxDecoration(
-        color:Color.fromARGB(255, 120, 222, 220),
+        color:const Color.fromARGB(255, 120, 222, 220),
         borderRadius: BorderRadius.circular(20),
         boxShadow:const [
           BoxShadow(
